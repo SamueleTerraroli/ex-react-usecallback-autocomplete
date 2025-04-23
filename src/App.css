@@ -1,0 +1,28 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.suggestions {
+  list-style: none;
+  border: 1px solid #ccc;
+  padding: 0;
+  margin-top: 5px;
+}
+
+.suggestions li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background-color: #f0f0f0;
+}
