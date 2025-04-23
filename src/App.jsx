@@ -1,3 +1,14 @@
+function debounce(callback, delay) {
+  let timer;
+  return (value) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      callback(value)
+    }, delay);
+  };
+}
+
+
 import React, { useState, useCallback } from 'react'
 import './App.css'
 
@@ -5,7 +16,20 @@ function App() {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
-  const handleInputChange = async (event) => {
+  // Funzione per recuperare i suggerimenti con debounce
+  const fetchSuggestions = useCallback(
+    debounce(async (newQuery) => {
+      console.log(newQuery)
+      const response = await fetch(
+        `https://boolean-spec-frontend.vercel.app/freetestapi/products?search=${newQuery}`
+      );
+      const data = await response.json();
+      setSuggestions(data);
+    }, 300),
+    []
+  );
+
+  const handleInputChange = (event) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
 
@@ -14,11 +38,7 @@ function App() {
       return;
     }
 
-    const response = await fetch(
-      `https://boolean-spec-frontend.vercel.app/freetestapi/products?search=${newQuery}`
-    );
-    const data = await response.json();
-    setSuggestions(data);
+    fetchSuggestions(newQuery); // Chiama la funzione con debounce
   };
 
   return (
@@ -39,6 +59,7 @@ function App() {
       )}
     </div>
   );
+
 };
 
 
